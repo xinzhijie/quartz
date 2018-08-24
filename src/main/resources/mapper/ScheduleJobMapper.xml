@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnpc.admin.mapper.ScheduleJobMapper" >
+  <resultMap id="BaseResultMap" type="com.cnpc.admin.entity.ScheduleJob" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="SCHEDULE_JOB_ID" property="scheduleJobId" jdbcType="INTEGER" />
+    <result column="ALIAS_NAME" property="aliasName" jdbcType="VARCHAR" />
+    <result column="CRON_EXPRESSION" property="cronExpression" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="VARCHAR" />
+    <result column="GMT_MODIFY" property="gmtModify" jdbcType="VARCHAR" />
+    <result column="IS_SYNC" property="isSync" jdbcType="VARCHAR" />
+    <result column="JOB_GROUP" property="jobGroup" jdbcType="VARCHAR" />
+    <result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+    <result column="JOB_TRIGGER" property="jobTrigger" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="queryList" resultMap="BaseResultMap">
+    SELECT * from SCHEDULE_JOB
+  </select>
+
+  <insert id="insertObject">
+    insert into SCHEDULE_JOB(
+    SCHEDULE_JOB_ID,ALIAS_NAME,CRON_EXPRESSION,DESCRIPTION,IS_SYNC,JOB_GROUP
+    ,JOB_NAME,JOB_TRIGGER,STATUS,URL) values(
+      replace(uuid(),'-',''),#{aliasName},#{cronExpression},#{description}
+      ,#{isSync},#{jobGroup},#{jobName},#{jobTrigger},#{status},
+      #{url})
+  </insert>
+
+  <select id="updateObject" resultMap="BaseResultMap">
+    UPDATE SCHEDULE_JOB set status = #{status} where SCHEDULE_JOB_ID=#{scheduleJobId}
+  </select>
+
+  <select id="deleteObject" resultMap="BaseResultMap">
+    DELETE FROM SCHEDULE_JOB where SCHEDULE_JOB_ID=#{id}
+  </select>
+
+  <select id="getObject" resultMap="BaseResultMap">
+    SELECT * from SCHEDULE_JOB where SCHEDULE_JOB_ID=#{id}
+  </select>
+
+</mapper>

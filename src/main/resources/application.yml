@@ -1,0 +1,80 @@
+logging:
+  level:
+    tk.mybatis: DEBUG
+    com.cnpc.admin: DEBUG
+spring:
+  application:
+    name: esp-admin
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  datasource:
+    name: test
+    #Configure the remote: url
+    #url: jdbc:mysql://10.27.213.67:3306/riped-admin?useUnicode=true&characterEncoding=UTF8
+    username: root
+    password: MYSQLPTRkygl@67
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  redis:
+    database: 0
+    #Configure the remote: host
+    #host: localhost
+  cache:
+    cache-names: espAdmin
+  freemarker:
+    template-loader-path: classpath:/template/
+mybatis:
+  basepackage: com.cnpc.admin.mapper
+  xmlLocation: classpath:mapper/**/*.xml
+  # id 主键生成
+  mappers: tk.mybatis.mapper.common.Mapper
+  identity: SELECT REPLACE(UUID(),'-','')
+  order: BEFORE
+  typeAliasesPackage: com.cnpc.admin.entity
+
+server:
+  port: ${CFG_ADMIN_PORT:8085}
+
+eureka:
+  instance:
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    # docker 部署开启
+    prefer-ip-address: ${PREFER_IP_ADDRESS_BL:false}
+    ip-address: ${CFG_ADMIN_HOST:localhost}
+    instance-id: ${spring.application.name}:${CFG_ADMIN_HOST:localhost}:${server.port}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    #Configure the remote: serviceUrl.defaultZone
+    serviceUrl:
+      defaultZone: http://${CFG_EUREKA_HOST:localhost}:${CFG_EUREKA_PORT:8761}/eureka/
+swagger:
+  basepackage: com.cnpc.admin
+  service:
+    name: user center for AdminESP
+    description: AdminESP 用户中心e
+    developer: billjiang
+
+admin:
+  rabbitmq:
+    host: 10.27.213.67
+    port: 5672
+    username: guest
+    password: guest
